@@ -1,0 +1,5 @@
+package: github.com/eris-ltd/eris-keys
+import:
+- package: github.com/ethereum/go-ethereum
+  subpackages:
+  - crypto/secp256k1

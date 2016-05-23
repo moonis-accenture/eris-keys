@@ -7,6 +7,7 @@ ENV REPOSITORY "github.com/eris-ltd/eris-keys"
 COPY . /go/src/$REPOSITORY/
 WORKDIR /go/src/$REPOSITORY/
 RUN chown -R $USER:$USER ./
+ENV GO15VENDOREXPERIMENT 1
 RUN go install
 
 # set the repo and install mint-client
