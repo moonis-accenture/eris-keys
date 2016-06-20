@@ -1,5 +1,5 @@
 # TODO - build eris/base
-FROM quay.io/eris/build
+FROM quay.io/eris/build:arm
 
 MAINTAINER Eris Industries <support@erisindustries.com>
 
@@ -7,7 +7,7 @@ ENV REPOSITORY "github.com/eris-ltd/eris-keys"
 COPY . /go/src/$REPOSITORY/
 WORKDIR /go/src/$REPOSITORY/
 RUN chown -R $USER:$USER ./
-RUN go install
+RUN go install --tags netgo
 
 # set the repo and install mint-client
 ENV REPOSITORY github.com/eris-ltd/mint-client
