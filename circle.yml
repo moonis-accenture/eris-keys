@@ -1,8 +1,6 @@
 machine:
 
   post:
-    - rm -rf ${GOPATH%%:*}/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME}
-    - mkdir -p ${GOPATH%%:*}/src/github.com/${CIRCLE_PROJECT_USERNAME}
     - git config --global user.email "billings@erisindustries.com"
     - git config --global user.name "Billings the Bot"
 
