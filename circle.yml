@@ -17,7 +17,7 @@ dependencies:
 
 test:
   override:
-    - go test ./eris-keys
+    - glide install -s -v && go test ./eris-keys
     - docker build -t eris/keys-test -f DockerfileTest .
     - docker run -it eris/keys-test ./test.sh
 
