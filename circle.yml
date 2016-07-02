@@ -14,7 +14,7 @@ dependencies:
 
 test:
   override:
-    - cd ${GOPATH%%:*}/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} && go test ./eris-keys
+    - cd ${GOPATH%%:*}/src/github.com/${CIRCLE_PROJECT_USERNAME}/${CIRCLE_PROJECT_REPONAME} && GO15VENDOREXPERIMENT=1 go test ./eris-keys
     - docker build -t eris/keys-test -f DockerfileTest .
     - docker run -it eris/keys-test ./test.sh
 
