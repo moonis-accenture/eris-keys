@@ -9,9 +9,9 @@ WORKDIR /go/src/$REPOSITORY/
 
 RUN chown -R $USER:$USER ./
 # GLIDE INSTALL
-RUN sudo add-apt-repository ppa:masterminds/glide \
-  && sudo apt-get update
-RUN sudo apt-get install glide
+RUN add-apt-repository ppa:masterminds/glide \
+  && apt-get update
+RUN apt-get install glide
 
 RUN glide install && GO15VENDOREXPERIMENT=1 go install ./
 
