@@ -8,10 +8,6 @@ COPY . /go/src/$REPOSITORY/
 WORKDIR /go/src/$REPOSITORY/
 
 RUN chown -R $USER:$USER ./
-# GLIDE INSTALL
-RUN apk add glide
-
-RUN glide install && GO15VENDOREXPERIMENT=1 go install ./
 
 USER $USER
 
