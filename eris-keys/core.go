@@ -15,9 +15,9 @@ import (
 
 	"github.com/eris-ltd/eris-keys/crypto"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/account"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/wire"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/golang.org/x/crypto/ripemd160"
+	"github.com/eris-ltd/tendermint/account"
+	"github.com/eris-ltd/tendermint/wire"
+	"golang.org/x/crypto/ripemd160"
 )
 
 var ErrLocked = fmt.Errorf("account is locked")

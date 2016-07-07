@@ -35,8 +35,8 @@ import (
 	"github.com/eris-ltd/eris-keys/crypto/randentropy"
 	"github.com/eris-ltd/eris-keys/crypto/secp256k1"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/account"
-	uuid "github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/wayn3h0/go-uuid"
+	"github.com/eris-ltd/tendermint/account"
+	uuid "github.com/wayn3h0/go-uuid"
 )
 
 type InvalidCurveErr string
