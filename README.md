@@ -5,7 +5,7 @@
 | Master | [![Circle CI](https://circleci.com/gh/eris-ltd/eris-keys/tree/master.svg?style=svg)](https://circleci.com/gh/eris-ltd/eris-keys/tree/master) |
 | Develop | [![Circle CI](https://circleci.com/gh/eris-ltd/eris-keys/tree/develop.svg?style=svg)](https://circleci.com/gh/eris-ltd/eris-keys/tree/develop) | 
 
-A simple **dev-only** tool for generating keys, producing and verifying signatures. These features are exposed through [eris-cli](https://github.com/eris-ltd/eris-cli), the entry point for the Eris platform.
+Eris Keys is a simple **dev-only** tool for generating keys, producing and verifying signatures. These features are exposed through [eris-cli](https://github.com/eris-ltd/eris-cli), the entry point for the Eris platform.
 
 ## Table of Contents
 
@@ -38,14 +38,9 @@ adding support for ED25519, and using AES-GCM for encryption. And of course the 
 
 ### For Developers
 
-`eris-keys` supports the same key/signature implementation used by bitcoin and ethereum, but [it's a C-library](https://github.com/bitcoin/secp256k1) that depends on `gmp` for big number arithmetic.
-On Mac you should be able to `brew install gmp`, on ubuntu `sudo apt-get install libgmp3-dev`.
-
-Then
-
-```
-go get github.com/eris-ltd/eris-keys
-```
+1. [Install go](https://golang.org/doc/install)
+2. Ensure you have gmp installed (sudo apt-get install libgmp3-dev || brew install gmp)
+3. `go get github.com/eris-ltd/eris-keys`
 
 ## Usage
 
@@ -165,4 +160,4 @@ See the [eris platform contributing file here](https://github.com/eris-ltd/codin
 
 ## License
 
-[GPL3](LICENSE)
+[GPL-3](LICENSE)
