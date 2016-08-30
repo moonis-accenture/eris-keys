@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/eris-ltd/common/go/common"
+	ed25519 "github.com/tendermint/go-crypto"
 	"github.com/eris-ltd/eris-keys/crypto"
 )
 
@@ -128,11 +129,9 @@ func checkAddrFromPub(typ string, pub, addr []byte) error {
 	case "ed25519,ripemd160":
 		// XXX: something weird here. I have seen this oscillate!
 		// addr2 = binary.BinaryRipemd160(pub)
-		typeFromString, err := crypto.AddrTypeFromString(typ)
-		if err != nil {
-			return err
-		}
-		addr2 = crypto.AddressFromPub(typeFromString, pub)
+		var pubArray ed25519.PubKeyEd25519
+		copy(pubArray[:], pub)
+		addr2 = pubArray.Address()
 	default:
 		return fmt.Errorf("Unknown or incomplete typ %s", typ)
 	}

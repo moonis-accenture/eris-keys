@@ -133,8 +133,6 @@ func AddrTypeFromString(s string) (AddrType, error) {
 		return AddrTypeRipemd160Sha256, nil
 	case "sha3":
 		return AddrTypeSha3, nil
-	case "ed25519":
-		return AddrTypeEd25519, nil
 	default:
 		var a AddrType
 		return a, fmt.Errorf("unknown addr type %s", s)
@@ -145,7 +143,6 @@ const (
 	AddrTypeRipemd160 AddrType = iota
 	AddrTypeRipemd160Sha256
 	AddrTypeSha3
-	AddrTypeEd25519
 )
 
 func AddressFromPub(addrType AddrType, pub []byte) (addr []byte) {
@@ -157,10 +154,6 @@ func AddressFromPub(addrType AddrType, pub []byte) (addr []byte) {
 		addr = Ripemd160(Sha256(pub))
 	case AddrTypeSha3:
 		addr = Sha3(pub[1:])[12:]
-	case AddrTypeEd25519:
-		var pubArray tmint_crypto.PubKeyEd25519
-		copy(pubArray[:], pub)
-		addr = pubArray.Address()
 	}
 	return
 }
@@ -397,6 +390,7 @@ func verifySigSecp256k1(hash, sig, pubOG []byte) (bool, error) {
 }
 
 func verifySigEd25519(hash, sig, pub []byte) (bool, error) {
+	fmt.Println("Yes we do hit here")
 	pubKeyBytes := new([32]byte)
 	copy(pubKeyBytes[:], pub)
 	sigBytes := new([64]byte)
