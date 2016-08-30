@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/rs/cors"
+	"github.com/rs/cors"
+	log "github.com/eris-ltd/eris-logger"
 )
 
 //------------------------------------------------------------------------
@@ -37,7 +38,7 @@ func StartServer(host, port string) error {
 	mux.HandleFunc("/lock", lockHandler)
 	mux.HandleFunc("/mint", convertMintHandler)
 
-	logger.Infof("Starting eris-keys server on %s:%s\n", host, port)
+	log.Infof("Starting eris-keys server on %s:%s\n", host, port)
 	c := cors.New(cors.Options{
 		AllowedOrigins: []string{"*"}, // TODO: dev
 	})
@@ -255,7 +256,7 @@ func nameHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	name, addr := args["name"], args["addr"]
 
-	logger.Debugf("name handler. name (%s). addr (%s)\n", name, addr)
+	log.Debugf("name handler. name (%s). addr (%s)\n", name, addr)
 
 	if name == "" {
 		WriteError(w, fmt.Errorf("please specify a name"))
@@ -286,7 +287,7 @@ func nameLsHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	name, addr := args["name"], args["addr"]
 
-	logger.Debugf("name ls handler. name (%s). addr (%s)\n", name, addr)
+	log.Debugf("name ls handler. name (%s). addr (%s)\n", name, addr)
 
 	names, err := coreNameList()
 	if err != nil {
@@ -311,7 +312,7 @@ func nameRmHandler(w http.ResponseWriter, r *http.Request) {
 	}
 	name, addr := args["name"], args["addr"]
 
-	logger.Debugf("name rm handler. name (%s). addr (%s)\n", name, addr)
+	log.Debugf("name rm handler. name (%s). addr (%s)\n", name, addr)
 
 	if name == "" {
 		WriteError(w, fmt.Errorf("please specify a name"))
@@ -334,7 +335,7 @@ func typeAuthArgs(r *http.Request) (typ string, auth string, args map[string]str
 		return
 	}
 
-	logger.Debugln("Request body:", string(b))
+	log.Debugln("Request body:", string(b))
 
 	if err = json.Unmarshal(b, &args); err != nil {
 		return

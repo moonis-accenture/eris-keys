@@ -4,11 +4,10 @@ import (
 	"crypto/aes"
 	"crypto/cipher"
 	"fmt"
-	//"golang.org/x/crypto/pbkdf2"
 	"crypto/sha256"
 	"github.com/eris-ltd/eris-keys/crypto/sha3"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/golang.org/x/crypto/ripemd160"
+	"golang.org/x/crypto/ripemd160"
 )
 
 func Ripemd160(data ...[]byte) []byte {

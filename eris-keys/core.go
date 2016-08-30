@@ -15,8 +15,10 @@ import (
 
 	"github.com/eris-ltd/eris-keys/crypto"
 
+
 	//"github.com/eris-ltd/eris-db/account"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/golang.org/x/crypto/ripemd160"
+	log "github.com/eris-ltd/eris-logger"
+	"golang.org/x/crypto/ripemd160"
 	tmint_crypto "github.com/tendermint/go-crypto"
 	"github.com/tendermint/go-wire"
 )
@@ -29,10 +31,10 @@ func GetKey(addr []byte) (*crypto.Key, error) {
 	// first check if the key is unlocked
 	k := AccountManager.GetKey(addr)
 	if k != nil {
-		logger.Debugln("Using unlocked key")
+		log.Debugln("Using unlocked key")
 		return k, nil
 	}
-	logger.Debugln("key is not unlocked")
+	log.Debugln("key is not unlocked")
 	// now see if we can find an encrypted version on disk
 	isEncrypted, err := crypto.IsEncryptedKey(AccountManager.KeyStore(), addr)
 	if err == nil && isEncrypted {
@@ -103,7 +105,7 @@ func coreImport(auth, keyType, theKey string) ([]byte, error) {
 	var keyStore crypto.KeyStore
 	var err error
 
-	logger.Infof("Importing key. Type (%s). Encrypted (%v)\n", keyType, auth != "")
+	log.Infof("Importing key. Type (%s). Encrypted (%v)\n", keyType, auth != "")
 
 	if auth == "" {
 		if keyStore, err = newKeyStore(); err != nil {
@@ -153,7 +155,7 @@ func coreKeygen(auth, keyType string) ([]byte, error) {
 	var keyStore crypto.KeyStore
 	var err error
 
-	logger.Infof("Generating new key. Type (%s). Encrypted (%v)\n", keyType, auth != "")
+	log.Infof("Generating new key. Type (%s). Encrypted (%v)\n", keyType, auth != "")
 
 	if auth == "" {
 		keyStore, err = newKeyStore()
@@ -173,7 +175,7 @@ func coreKeygen(auth, keyType string) ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("error generating key %s %s", keyType, err)
 	}
-	logger.Infof("Generated new key. Address (%x). Type (%s). Encrypted (%v)\n", key.Address, key.Type, auth != "")
+	log.Infof("Generated new key. Address (%x). Type (%s). Encrypted (%v)\n", key.Address, key.Type, auth != "")
 	return key.Address, nil
 }
 

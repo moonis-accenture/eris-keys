@@ -6,6 +6,9 @@ MAINTAINER Eris Industries <support@erisindustries.com>
 ENV REPOSITORY "github.com/eris-ltd/eris-keys"
 COPY . /go/src/$REPOSITORY/
 WORKDIR /go/src/$REPOSITORY/
+
+RUN go get github.com/Masterminds/glide && glide install -s -v
+
 RUN chown -R $USER:$USER ./
 RUN go install
 
@@ -28,4 +31,4 @@ RUN chown -R $USER:$USER $DATA
 WORKDIR /home/$USER/.eris
 VOLUME $DATA
 EXPOSE 4767
-CMD ["eris-keys", "server", "--host", "0.0.0.0", "--log", "3"]
+CMD ["eris-keys", "server", "--host", "0.0.0.0", "--log", "3", "-d"]

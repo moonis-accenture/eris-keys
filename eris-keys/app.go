@@ -4,13 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/common/go/common"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/common/go/log"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/eris-ltd/common/go/common"
+	log "github.com/eris-ltd/eris-logger"
+	"github.com/spf13/cobra"
 )
 
 func init() {
-	initLog()
 
 	// note these are only for use by the client
 	if keysHost := os.Getenv("ERIS_KEYS_HOST"); keysHost != "" {
@@ -53,6 +52,9 @@ var (
 
 	// lockCmd only
 	UnlockTime int // minutes
+	
+	Verbose bool
+	Debug bool
 )
 
 var EKeys = &cobra.Command{
@@ -65,7 +67,6 @@ var EKeys = &cobra.Command{
 func Execute() {
 	BuildKeysCommand()
 	EKeys.PersistentPreRun = before
-	EKeys.PersistentPostRun = after
 	EKeys.Execute()
 }
 
@@ -182,7 +183,8 @@ func addKeysFlags() {
 	EKeys.PersistentFlags().StringVarP(&KeyAddr, "addr", "", "", "address of key to use")
 	EKeys.PersistentFlags().StringVarP(&KeyHost, "host", "", DefaultHost, "set the host for talking to the key daemon")
 	EKeys.PersistentFlags().StringVarP(&KeyPort, "port", "", DefaultPort, "set the port for key daemon to listen on")
-
+	EKeys.PersistentFlags().BoolVarP(&Debug, "debug", "d", false, "debug mode")
+	EKeys.PersistentFlags().BoolVarP(&Verbose, "verbose", "v", false, "verbose mode")
 	keygenCmd.Flags().StringVarP(&KeyType, "type", "t", DefaultKeyType, "specify the type of key to create. Supports 'secp256k1,sha3' (ethereum),  'secp256k1,ripemd160sha2' (bitcoin), 'ed25519,ripemd160' (tendermint)")
 	keygenCmd.Flags().BoolVarP(&NoPassword, "no-pass", "", false, "don't use a password for this key")
 
@@ -208,27 +210,12 @@ func checkMakeDataDir(dir string) error {
 }
 
 func before(cmd *cobra.Command, args []string) {
-	var l log.LogLevel
-	// ugly hack. TODO: fix (csk)
-	switch logLevel {
-	case 0:
-		l = 0
-	case 1:
-		l = 1
-	case 2:
-		l = 2
-	case 3:
-		l = 3
-	case 4:
-		l = 4
-	case 5:
-		l = 5
+
+	log.SetLevel(log.WarnLevel)
+	if Verbose {
+	  log.SetLevel(log.InfoLevel)
+	} else if Debug {
+	  log.SetLevel(log.DebugLevel)
 	}
-	log.SetLoggers(l, os.Stdout, os.Stderr)
-
 	DaemonAddr = fmt.Sprintf("http://%s:%s", KeyHost, KeyPort)
-}
-
-func after(cmd *cobra.Command, args []string) {
-	log.Flush()
 }

@@ -6,10 +6,10 @@ import (
 	"io/ioutil"
 	"os"
 
-	. "github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/common/go/common"
-
+	. "github.com/eris-ltd/common/go/common"
+	log "github.com/eris-ltd/eris-logger"
 	//"github.com/howeyc/gopass"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/spf13/cobra"
+	"github.com/spf13/cobra"
 )
 
 func ExitConnectErr(err error) {
@@ -31,7 +31,7 @@ func cliKeygen(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliLock(cmd *cobra.Command, args []string) {
@@ -40,7 +40,7 @@ func cliLock(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliConvert(cmd *cobra.Command, args []string) {
@@ -49,7 +49,7 @@ func cliConvert(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliUnlock(cmd *cobra.Command, args []string) {
@@ -59,7 +59,7 @@ func cliUnlock(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 // since pubs are not saved, the key needs to be unlocked to get the pub
@@ -70,7 +70,7 @@ func cliPub(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliSign(cmd *cobra.Command, args []string) {
@@ -84,7 +84,7 @@ func cliSign(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliVerify(cmd *cobra.Command, args []string) {
@@ -97,7 +97,7 @@ func cliVerify(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliHash(cmd *cobra.Command, args []string) {
@@ -110,7 +110,7 @@ func cliHash(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliImport(cmd *cobra.Command, args []string) {
@@ -129,7 +129,7 @@ func cliImport(cmd *cobra.Command, args []string) {
 
 	var auth string
 	if !NoPassword {
-		logger.Println("Please note that this encryption will only take effect if you passed a raw private key (TODO!).")
+		log.Println("Please note that this encryption will only take effect if you passed a raw private key (TODO!).")
 		auth = hiddenAuth()
 	}
 
@@ -138,7 +138,7 @@ func cliImport(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliName(cmd *cobra.Command, args []string) {
@@ -155,7 +155,7 @@ func cliName(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }
 
 func cliNameLs(cmd *cobra.Command, args []string) {
@@ -167,7 +167,7 @@ func cliNameLs(cmd *cobra.Command, args []string) {
 	names := make(map[string]string)
 	IfExit(json.Unmarshal([]byte(r), &names))
 	for n, a := range names {
-		logger.Printf("%s: %s\n", n, a)
+		log.Printf("%s: %s\n", n, a)
 	}
 }
 
@@ -181,5 +181,5 @@ func cliNameRm(cmd *cobra.Command, args []string) {
 		ExitConnectErr(err)
 	}
 	IfExit(err)
-	logger.Println(r)
+	log.Println(r)
 }

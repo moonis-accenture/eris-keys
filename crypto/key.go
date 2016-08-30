@@ -35,7 +35,7 @@ import (
 	"github.com/eris-ltd/eris-keys/crypto/randentropy"
 	"github.com/eris-ltd/eris-keys/crypto/secp256k1"
 
-	uuid "github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/wayn3h0/go-uuid"
+	uuid "github.com/wayn3h0/go-uuid"
 	tmint_crypto "github.com/tendermint/go-crypto"
 )
 
@@ -133,6 +133,8 @@ func AddrTypeFromString(s string) (AddrType, error) {
 		return AddrTypeRipemd160Sha256, nil
 	case "sha3":
 		return AddrTypeSha3, nil
+	case "ed25519":
+		return AddrTypeEd25519, nil
 	default:
 		var a AddrType
 		return a, fmt.Errorf("unknown addr type %s", s)
@@ -143,6 +145,7 @@ const (
 	AddrTypeRipemd160 AddrType = iota
 	AddrTypeRipemd160Sha256
 	AddrTypeSha3
+	AddrTypeEd25519
 )
 
 func AddressFromPub(addrType AddrType, pub []byte) (addr []byte) {
@@ -154,6 +157,10 @@ func AddressFromPub(addrType AddrType, pub []byte) (addr []byte) {
 		addr = Ripemd160(Sha256(pub))
 	case AddrTypeSha3:
 		addr = Sha3(pub[1:])[12:]
+	case AddrTypeEd25519:
+		var pubArray tmint_crypto.PubKeyEd25519
+		copy(pubArray[:], pub)
+		addr = pubArray.Address()
 	}
 	return
 }
