@@ -35,8 +35,8 @@ import (
 	"github.com/eris-ltd/eris-keys/crypto/randentropy"
 	"github.com/eris-ltd/eris-keys/crypto/secp256k1"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/account"
 	uuid "github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/wayn3h0/go-uuid"
+	tmint_crypto "github.com/tendermint/go-crypto"
 )
 
 type InvalidCurveErr string
@@ -339,7 +339,7 @@ func keyFromPrivEd25519(addrType AddrType, priv []byte) (*Key, error) {
 	privKeyBytes := new([64]byte)
 	copy(privKeyBytes[:32], priv)
 	pubKeyBytes := ed25519.MakePublicKey(privKeyBytes)
-	pubKey := account.PubKeyEd25519(*pubKeyBytes)
+	pubKey := tmint_crypto.PubKeyEd25519(*pubKeyBytes)
 	id, _ := uuid.NewRandom()
 	return &Key{
 		Id:         id,
@@ -367,10 +367,10 @@ func signSecp256k1(k *Key, hash []byte) ([]byte, error) {
 
 func signEd25519(k *Key, hash []byte) ([]byte, error) {
 	priv := k.PrivateKey
-	var privKey account.PrivKeyEd25519
+	var privKey tmint_crypto.PrivKeyEd25519
 	copy(privKey[:], priv)
 	sig := privKey.Sign(hash)
-	sigB := sig.(account.SignatureEd25519)
+	sigB := sig.(tmint_crypto.SignatureEd25519)
 	return sigB[:], nil
 }
 

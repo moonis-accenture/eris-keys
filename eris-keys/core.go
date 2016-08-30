@@ -15,9 +15,10 @@ import (
 
 	"github.com/eris-ltd/eris-keys/crypto"
 
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/account"
-	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/github.com/eris-ltd/tendermint/wire"
+	//"github.com/eris-ltd/eris-db/account"
 	"github.com/eris-ltd/eris-keys/Godeps/_workspace/src/golang.org/x/crypto/ripemd160"
+	tmint_crypto "github.com/tendermint/go-crypto"
+	"github.com/tendermint/go-wire"
 )
 
 var ErrLocked = fmt.Errorf("account is locked")
@@ -242,12 +243,12 @@ func corePub(addr string) ([]byte, error) {
 
 func coreConvert(addr string) ([]byte, error) {
 	type privValidator struct {
-		Address    []byte                 `json:"address"`
-		PubKey     account.PubKeyEd25519  `json:"pub_key"`
-		PrivKey    account.PrivKeyEd25519 `json:"priv_key"`
-		LastHeight int                    `json:"last_height"`
-		LastRound  int                    `json:"last_round"`
-		LastStep   int                    `json:"last_step"`
+		Address    []byte                      `json:"address"`
+		PubKey     tmint_crypto.PubKeyEd25519  `json:"pub_key"`
+		PrivKey    tmint_crypto.PrivKeyEd25519 `json:"priv_key"`
+		LastHeight int                         `json:"last_height"`
+		LastRound  int                         `json:"last_round"`
+		LastStep   int                         `json:"last_step"`
 	}
 
 	addrB, err := hex.DecodeString(addr)
@@ -264,10 +265,10 @@ func coreConvert(addr string) ([]byte, error) {
 		return nil, err
 	}
 
-	var pubKey account.PubKeyEd25519
+	var pubKey tmint_crypto.PubKeyEd25519
 	copy(pubKey[:], pub)
 
-	var privKey account.PrivKeyEd25519
+	var privKey tmint_crypto.PrivKeyEd25519
 	copy(privKey[:], key.PrivateKey)
 
 	privVal := &privValidator{

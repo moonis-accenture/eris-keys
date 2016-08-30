@@ -1,0 +1,132 @@
+hash: c6a6c95f33e428467738862a39ed65dfb33cc39affceed70f2838edf95b50ef1
+updated: 2016-08-29T22:23:33.139778438+02:00
+imports:
+- name: github.com/agl/ed25519
+  version: d2b94fd789ea21d12fac1a4443dd3a3f79cda72c
+  subpackages:
+  - edwards25519
+- name: github.com/btcsuite/btcd
+  version: 2ef82e7db35dc8c499fa9091d768dc99bbaff893
+  subpackages:
+  - btcec
+- name: github.com/btcsuite/fastsha256
+  version: 637e656429416087660c84436a2a035d69d54e2e
+- name: github.com/cpuguy83/go-md2man
+  version: 71acacd42f85e5e82f70a55327789582a5200a90
+  subpackages:
+  - md2man
+- name: github.com/eris-ltd/common
+  version: 26df169480eef97df7ed9f5419b7367895d077b4
+  subpackages:
+  - go/common
+  - go/log
+- name: github.com/eris-ltd/tendermint
+  version: b0c1ee2c3ad851cf4e7b9dc95c2e65559e5d447d
+  subpackages:
+  - account
+  - common
+  - config
+  - db
+  - logger
+  - merkle
+  - permission/types
+  - wire
+- name: github.com/go-stack/stack
+  version: 100eb0c0a9c5b306ca2fb4f165df21d80ada4b82
+- name: github.com/howeyc/gopass
+  version: 10b54de414cc9693221d5ff2ae14fd2fbf1b0ac1
+- name: github.com/inconshreveable/log15
+  version: 210d6fdc4d979ef6579778f1b6ed84571454abb4
+  subpackages:
+  - stack
+  - term
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/mattn/go-colorable
+  version: d67e0b7d1797975196499f79bcc322c08b9f218b
+- name: github.com/mattn/go-isatty
+  version: fdbe02a1b44e75977b2690062b83cf507d70c013
+- name: github.com/mitchellh/go-homedir
+  version: df55a15e5ce646808815381b3db47a8c66ea62f4
+- name: github.com/naoina/go-stringutil
+  version: 360db0db4b01d34e12a2ec042c09e7d37fece761
+- name: github.com/naoina/toml
+  version: 751171607256bb66e64c9f0220c00662420c38e9
+  subpackages:
+  - ast
+- name: github.com/rs/cors
+  version: 6e0c3cb65fc0fdb064c743d176a620e3ca446dfb
+- name: github.com/russross/blackfriday
+  version: 8cec3a854e68dba10faabbe31c089abf4a3e57a6
+- name: github.com/shurcooL/sanitized_anchor_name
+  version: 244f5ac324cb97e1987ef901a0081a77bfd8e845
+- name: github.com/Sirupsen/logrus
+  version: 57cce1ed6103dce7791881d3e69e55f90d986aa5
+- name: github.com/spf13/cobra
+  version: 385fc87e4343efec233811d3d933509e8975d11a
+- name: github.com/spf13/pflag
+  version: 67cbc198fd11dab704b214c1e629a97af392c085
+- name: github.com/syndtr/goleveldb
+  version: 63c9e642efad852f49e20a6f90194cae112fd2ac
+  subpackages:
+  - leveldb
+  - leveldb/cache
+  - leveldb/comparer
+  - leveldb/errors
+  - leveldb/filter
+  - leveldb/iterator
+  - leveldb/journal
+  - leveldb/memdb
+  - leveldb/opt
+  - leveldb/storage
+  - leveldb/table
+  - leveldb/util
+- name: github.com/syndtr/gosnappy
+  version: 156a073208e131d7d2e212cb749feae7c339e846
+  subpackages:
+  - snappy
+- name: github.com/tendermint/ed25519
+  version: 533fb6548e2071076888eda3c38749d707ba49bc
+  subpackages:
+  - extra25519
+- name: github.com/tendermint/go-common
+  version: 3dabf304a16e42ce2db6a456ef508a75cdf17679
+- name: github.com/tendermint/go-crypto
+  version: 4b11d62bdb324027ea01554e5767b71174680ba0
+- name: github.com/tendermint/go-logger
+  version: cefb3a45c0bf3c493a04e9bcd9b1540528be59f2
+- name: github.com/tendermint/go-wire
+  version: 3b0adbc86ed8425eaed98516165b6788d9f4de7a
+- name: github.com/tendermint/log15
+  version: ""
+  subpackages:
+  - term
+- name: github.com/wayn3h0/go-uuid
+  version: 1622016a49b50139b1ac263e6ef2804226b3dec6
+  subpackages:
+  - internal/dcesecurity
+  - internal/layout
+  - internal/namebased
+  - internal/namebased/md5
+  - internal/namebased/sha1
+  - internal/random
+  - internal/timebased
+  - internal/version
+- name: golang.org/x/crypto
+  version: 1f22c0103821b9390939b6776727195525381532
+  subpackages:
+  - curve25519
+  - pbkdf2
+  - ripemd160
+  - scrypt
+  - ssh/terminal
+  - nacl/secretbox
+  - openpgp/armor
+  - poly1305
+  - salsa20/salsa
+  - openpgp/errors
+- name: golang.org/x/sys
+  version: 5eaf0df67e70d6997a9fe0ed24383fa1b01638d3
+  subpackages:
+  - unix
+testImports: []
