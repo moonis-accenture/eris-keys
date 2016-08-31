@@ -1,16 +1,13 @@
 /*
 	This file is part of go-ethereum
-
 	go-ethereum is free software: you can redistribute it and/or modify
 	it under the terms of the GNU Lesser General Public License as published by
 	the Free Software Foundation, either version 3 of the License, or
 	(at your option) any later version.
-
 	go-ethereum is distributed in the hope that it will be useful,
 	but WITHOUT ANY WARRANTY; without even the implied warranty of
 	MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 	GNU General Public License for more details.
-
 	You should have received a copy of the GNU Lesser General Public License
 	along with go-ethereum.  If not, see <http://www.gnu.org/licenses/>.
 */
@@ -32,10 +29,11 @@ import (
 	"strings"
 
 	"github.com/eris-ltd/eris-keys/crypto/ed25519"
+	"github.com/eris-ltd/eris-keys/crypto/randentropy"
 	"github.com/eris-ltd/eris-keys/crypto/secp256k1"
 
+	"github.com/eris-ltd/eris-keys/crypto/helpers"
 	uuid "github.com/wayn3h0/go-uuid"
-	tmint_crypto "github.com/tendermint/go-crypto"
 )
 
 type InvalidCurveErr string
@@ -183,7 +181,7 @@ func NewKeyFromPriv(typ KeyType, priv []byte) (*Key, error) {
 	case CurveTypeSecp256k1:
 		return keyFromPrivSecp256k1(typ.AddrType, priv)
 	case CurveTypeEd25519:
-		return keyFromPrivEd25519(typ.AddrType, priv), nil
+		return keyFromPrivEd25519(typ.AddrType, priv)
 	default:
 		return nil, fmt.Errorf("Unknown curve type: %v", typ.CurveType)
 	}
@@ -315,8 +313,8 @@ func newKeySecp256k1(addrType AddrType) *Key {
 }
 
 func newKeyEd25519(addrType AddrType) *Key {
-	privKey := tmint_crypto.GenPrivKeyEd25519()
-	key := keyFromPrivEd25519(addrType, privKey.Bytes())
+	randBytes := randentropy.GetEntropyMixed(32)
+	key, _ := keyFromPrivEd25519(addrType, randBytes)
 	return key
 }
 
@@ -334,18 +332,18 @@ func keyFromPrivSecp256k1(addrType AddrType, priv []byte) (*Key, error) {
 	}, nil
 }
 
-func keyFromPrivEd25519(addrType AddrType, priv []byte) (*Key) {
+func keyFromPrivEd25519(addrType AddrType, priv []byte) (*Key, error) {
 	privKeyBytes := new([64]byte)
 	copy(privKeyBytes[:32], priv)
 	pubKeyBytes := ed25519.MakePublicKey(privKeyBytes)
-	pubKey := tmint_crypto.PubKeyEd25519(*pubKeyBytes)
+	pubKey := helpers.PubKeyEd25519(*pubKeyBytes)
 	id, _ := uuid.NewRandom()
 	return &Key{
 		Id:         id,
 		Type:       KeyType{CurveTypeEd25519, addrType},
 		Address:    pubKey.Address(),
 		PrivateKey: privKeyBytes[:],
-	}
+	}, nil
 }
 
 func pubKeySecp256k1(k *Key) ([]byte, error) {
@@ -355,7 +353,7 @@ func pubKeySecp256k1(k *Key) ([]byte, error) {
 func pubKeyEd25519(k *Key) ([]byte, error) {
 	priv := k.PrivateKey
 	privKeyBytes := new([64]byte)
-	copy(privKeyBytes[:], priv[0:64])
+	copy(privKeyBytes[:32], priv)
 	pubKeyBytes := ed25519.MakePublicKey(privKeyBytes)
 	return pubKeyBytes[:], nil
 }
@@ -365,10 +363,11 @@ func signSecp256k1(k *Key, hash []byte) ([]byte, error) {
 }
 
 func signEd25519(k *Key, hash []byte) ([]byte, error) {
-	var priv tmint_crypto.PrivKeyEd25519
-	copy(priv[:], k.PrivateKey[0:64])
-	sig := priv.Sign(hash)
-	sigB := sig.(tmint_crypto.SignatureEd25519)
+	priv := k.PrivateKey
+	var privKey helpers.PrivKeyEd25519
+	copy(privKey[:], priv)
+	sig := privKey.Sign(hash)
+	sigB := sig.(helpers.SignatureEd25519)
 	return sigB[:], nil
 }
 
@@ -388,10 +387,10 @@ func verifySigSecp256k1(hash, sig, pubOG []byte) (bool, error) {
 }
 
 func verifySigEd25519(hash, sig, pub []byte) (bool, error) {
-	var publicKey [32]byte
-	var signature [64]byte
-	copy(publicKey[:], pub)
-	copy(signature[:], sig)
-	res := ed25519.Verify(&publicKey, hash, &signature) 
+	pubKeyBytes := new([32]byte)
+	copy(pubKeyBytes[:], pub)
+	sigBytes := new([64]byte)
+	copy(sigBytes[:], sig)
+	res := ed25519.Verify(pubKeyBytes, hash, sigBytes)
 	return res, nil
 }
