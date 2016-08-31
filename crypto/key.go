@@ -356,7 +356,7 @@ func pubKeySecp256k1(k *Key) ([]byte, error) {
 func pubKeyEd25519(k *Key) ([]byte, error) {
 	priv := k.PrivateKey
 	privKeyBytes := new([64]byte)
-	copy(privKeyBytes[:32], priv)
+	copy(privKeyBytes[:], priv[0:64])
 	pubKeyBytes := ed25519.MakePublicKey(privKeyBytes)
 	return pubKeyBytes[:], nil
 }
@@ -366,12 +366,10 @@ func signSecp256k1(k *Key, hash []byte) ([]byte, error) {
 }
 
 func signEd25519(k *Key, hash []byte) ([]byte, error) {
-	priv := k.PrivateKey
-	var privKey tmint_crypto.PrivKeyEd25519
-	copy(privKey[:], priv)
-	sig := privKey.Sign(hash)
-	sigB := sig.(tmint_crypto.SignatureEd25519)
-	return sigB[:], nil
+	var priv [64]byte
+	copy(priv[:], k.PrivateKey[0:64])
+	sig := ed25519.Sign(&priv, hash)
+	return sig[:], nil
 }
 
 func verifySigSecp256k1(hash, sig, pubOG []byte) (bool, error) {
@@ -390,11 +388,10 @@ func verifySigSecp256k1(hash, sig, pubOG []byte) (bool, error) {
 }
 
 func verifySigEd25519(hash, sig, pub []byte) (bool, error) {
-	fmt.Println("Yes we do hit here")
-	pubKeyBytes := new([32]byte)
-	copy(pubKeyBytes[:], pub)
-	sigBytes := new([64]byte)
-	copy(sigBytes[:], sig)
-	res := ed25519.Verify(pubKeyBytes, hash, sigBytes)
+	var publicKey [32]byte
+	var signature [64]byte
+	copy(publicKey[:], pub[0:32])
+	copy(signature[:], sig[0:64])
+	res := ed25519.Verify(&publicKey, hash, &signature) 
 	return res, nil
 }
